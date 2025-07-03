@@ -4,7 +4,7 @@ name = "loca"
 version = "0.1.0"
 description = "Local, privacy-first semantic code search engine."
 readme = "README.md"
-authors = [{ name = "Khalil Elemam", email = "khalil.l.elemam@gmail.com }]
+authors = [{ name = "Khalil Elemam", email = "khalil.l.elemam@gmail.com" }]
 license = { text = "MIT" }
 requires-python = ">=3.9"
 dependencies = [
