@@ -1,4 +1,4 @@
-# loca
+# loca 🔍
 
 **Local, privacy-first semantic code search engine.**
 
@@ -7,9 +7,11 @@ loca is a blazing-fast, local-first tool that lets you search your codebase usin
 ## Features
 - 🔍 **Semantic code search**: Find code by meaning, not just keywords.
 - 🛡️ **Privacy-first**: Your code never leaves your machine.
-- ⚡ **Fast**: Indexes and searches even large codebases quickly.
+- ⚡ **Fast, incremental indexing**: Two-level caching (file & snippet) means only changed code is re-embedded, making repeated indexing much faster.
 - 🧠 **Natural language queries**: Search like you think.
 - 🗂️ **Easy CLI**: Simple commands for indexing, querying, and managing your project.
+- 💾 **Corruption-resistant cache**: Auto-recovers from cache file issues.
+- 📊 **Progress bars & spinners**: Modern, user-friendly CLI experience.
 
 ## Installation
 
@@ -91,7 +93,8 @@ loca --version
 - chromadb, xxhash, platformdirs, colorama (installed automatically)
 
 ## License
-MIT
+
+MIT — see [LICENSE](LICENSE) for details.
 
 ---
 
