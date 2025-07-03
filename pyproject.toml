@@ -1,0 +1,26 @@
+
+[project]
+name = "loca"
+version = "0.1.0"
+description = "Local, privacy-first semantic code search engine."
+readme = "README.md"
+authors = [{ name = "Khalil Elemam", email = "khalil.l.elemam@gmail.com }]
+license = { text = "MIT" }
+requires-python = ">=3.9"
+dependencies = [
+  "chromadb",
+  "xxhash",
+  "platformdirs",
+  "colorama"
+]
+
+[project.scripts]
+loca = "loca.cli:main"
+
+[tool.setuptools]
+packages = ["loca"]
+
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
