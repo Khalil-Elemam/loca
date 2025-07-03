@@ -39,6 +39,7 @@ def command(name: Optional[str] = None):
 
 @command("set-root")
 def set_project_root(path: str = "."):
+    print(f"{Style.BRIGHT}📂 Setting project root...{Style.RESET_ALL}\n")
     project_root = Path(path).resolve()
     if not project_root.is_dir():
         print(
@@ -51,9 +52,10 @@ def set_project_root(path: str = "."):
 
 @command()
 def query(q: str, n_results: int = 5):
+    print(f"{Style.BRIGHT}🔍 Searching for: {q}{Style.RESET_ALL}\n")
     try:
         with Spinner("Searching database"):
-            results = chroma.query(query_texts=[q], n_results=n_results)
+            results = chroma.query(q, n_results)
     except RuntimeError as e:
         print(f"{Fore.RED}{e}{Style.RESET_ALL}\n")
         return
@@ -114,6 +116,7 @@ def clear() -> None:
     """
     Clear the caches and the ChromaDB collection.
     """
+    print(f"{Style.BRIGHT}🧹 Clearing all caches and database...{Style.RESET_ALL}\n")
     try:
         with Spinner("Clearing database and caches"):
             chroma.clear()

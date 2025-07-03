@@ -1,18 +1,25 @@
-
 [project]
 name = "loca"
-version = "0.1.0"
+version = "0.1.1"
 description = "Local, privacy-first semantic code search engine."
 readme = "README.md"
 authors = [{ name = "Khalil Elemam", email = "khalil.l.elemam@gmail.com" }]
 license = { text = "MIT" }
 requires-python = ">=3.9"
 dependencies = [
-  "chromadb",
-  "xxhash",
-  "platformdirs",
-  "colorama"
+    "chromadb>=0.4.0",
+    "sentence-transformers>=2.2.0",
+    "torch>=1.9.0",
+    "xxhash>=3.0.0",
+    "platformdirs>=3.0.0",
+    "colorama>=0.4.0",
+    "lazy-import>=0.2.0"
 ]
+
+[project.urls]
+Homepage = "https://github.com/Khalil-Elemam/loca"
+Repository = "https://github.com/Khalil-Elemam/loca"
+Issues = "https://github.com/Khalil-Elemam/loca/issues"
 
 [project.scripts]
 loca = "loca.cli:main"
@@ -20,7 +27,14 @@ loca = "loca.cli:main"
 [tool.setuptools]
 packages = ["loca"]
 
+[tool.setuptools.package-data]
+loca = ["py.typed"]
+
 [build-system]
-requires = ["setuptools>=61"]
+requires = ["setuptools>=61", "wheel"]
 build-backend = "setuptools.build_meta"
+
+[tool.setuptools.dynamic]
+# For future dynamic versioning if needed
+# version = {attr = "loca.__version__"}
 

@@ -1,8 +1,8 @@
 
 import sys
 import time
+import threading
 from typing import Iterator, Any
-from contextlib import contextmanager
 from colorama import Fore, Style, init
 
 init(autoreset=True)
@@ -63,49 +63,44 @@ class ProgressBar:
 
 
 class Spinner:
-    """Simple spinner for indeterminate progress."""
+    """Threaded spinner for indeterminate progress."""
 
     def __init__(self, description: str = "Loading"):
         self.description = description
         self.chars = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"]
         self.index = 0
         self.active = False
-        self.start_time = time.time()
+        self.thread = None
+        self.start_time = None
+
+    def _spin(self):
+        """Background thread that animates the spinner."""
+        while self.active:
+            char = self.chars[self.index % len(self.chars)]
+            sys.stdout.write(f"\r{Fore.YELLOW}{char} {Fore.CYAN}{self.description}{Style.RESET_ALL}")
+            sys.stdout.flush()
+            self.index += 1
+            time.sleep(0.1)
 
     def __enter__(self):
         self.active = True
         self.start_time = time.time()
+        self.thread = threading.Thread(target=self._spin, daemon=True)
+        self.thread.start()
         return self
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         self.active = False
-        elapsed = time.time() - self.start_time
+        if self.thread and self.thread.is_alive():
+            self.thread.join(timeout=0.5)  # Don't wait too long
+        
         # Clear spinner line
         sys.stdout.write("\r" + " " * (len(self.description) + 20) + "\r")
         sys.stdout.flush()
-        # Show completion message with timing
+        
+        # Print completion message
+        elapsed = time.time() - self.start_time
         print(f"{Fore.GREEN}✓ {self.description} (completed in {elapsed:.2f}s){Style.RESET_ALL}")
-
-    def update(self, message: str = ""):
-        """Update spinner with optional message."""
-        if self.active:
-            char = self.chars[self.index % len(self.chars)]
-            self.index += 1
-            display_msg = f" {message}" if message else ""
-            sys.stdout.write(f"\r{Fore.YELLOW}{char} {Fore.CYAN}{self.description}{Style.RESET_ALL}{display_msg}")
-            sys.stdout.flush()
-
-
-@contextmanager
-def timer(description: str):
-    """Context manager to time operations and show duration."""
-    print(f"{Fore.BLUE}🕐 {description}...{Style.RESET_ALL}")
-    start_time = time.time()
-    try:
-        yield
-    finally:
-        elapsed = time.time() - start_time
-        print(f"{Fore.GREEN}✅ {description} completed in {elapsed:.2f}s{Style.RESET_ALL}")
 
 
 def progress_iterator(

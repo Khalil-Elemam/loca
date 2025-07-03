@@ -1,3 +1,4 @@
+from pathlib import Path
 from typing import Literal, Any
 import ast
 
@@ -25,6 +26,13 @@ class Snippet:
     @property
     def id(self) -> str:
         return f"{self.file_path}:{self.line_start}"
+
+    def get_embedding_text(self) -> str:
+        """
+        Returns a text representation of the snippet for embedding.
+        This includes the type, name, and code.
+        """
+        return f"code: {self.code}, filename: {Path(self.file_path).stem} type: {self.type}, {'name: ' + self.name if self.name else ''}, {'docstring: ' + self.docstring if self.docstring else ''}"
 
     def to_dict(self) -> dict[str, Any]:
         return {

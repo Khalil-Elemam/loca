@@ -1,8 +1,15 @@
 import argparse
 import inspect
 from importlib.metadata import version, PackageNotFoundError
+import logging
 from colorama import init, Fore, Style
 from .core import commands
+
+
+# Suppress noisy logs from dependencies
+logging.getLogger("sentence_transformers").setLevel(logging.WARNING)
+logging.getLogger("chromadb").setLevel(logging.WARNING)
+logging.getLogger("chromadb.telemetry").setLevel(logging.CRITICAL)
 
 
 def main() -> None:
@@ -88,3 +95,7 @@ def main() -> None:
     accepted_args = sig.parameters.keys()
     command_args = {k: args.get(k) for k in accepted_args}
     command(**command_args)
+
+
+if __name__ == "__main__":
+    main()
